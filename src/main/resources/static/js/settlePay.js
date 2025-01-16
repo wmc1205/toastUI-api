@@ -25,7 +25,7 @@ let SettlePay = {
             }
         }catch(e){
             processType='D';
-            url = serverContext + "/isVerifyMember";
+            url = serverContext + "/login";
         }
 
         return url;
