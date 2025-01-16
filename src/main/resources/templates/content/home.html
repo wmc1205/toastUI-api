@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<div th:fragment="content" th:class="container">
+    <div th:block>
+    <!-- 테이블 추가 이벤트 -->
+    <div class="btn-wrapper" style="margin-bottom: 10px;">
+        <div>
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="Enter search keyword">
+            </form>
+            <button id="searchButton">Search</button>
+        </div>
+    <div th:id="grid"></div>
+</div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const url = "/api/users";
+                dps.Ajax.initGrid(url);
+            });
+        </script>
+</div>
+</div>
+</html>
