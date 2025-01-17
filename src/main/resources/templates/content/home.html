@@ -11,14 +11,22 @@
                 <input type="text" id="searchInput" placeholder="Enter search keyword">
             </form>
             <button id="searchButton">Search</button>
+            <button id="deleteButton">delete</button>
         </div>
     <div th:id="grid"></div>
 </div>
         <script>
+            let grid;
             document.addEventListener('DOMContentLoaded', () => {
                 const url = "/api/users";
-                dps.Ajax.initGrid(url);
+                grid = dps.Util.initGrid(url);
+
             });
+            const deleteButton = document.getElementById('deleteButton');
+            deleteButton.addEventListener('click', () => {
+                grid.removeRow(1);
+            });
+
         </script>
 </div>
 </div>

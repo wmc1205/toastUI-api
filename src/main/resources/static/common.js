@@ -1,8 +1,19 @@
 let dps = {
     CMMERRMSG : "통신이 원활하지 않습니다. 잠시후 다시 시도해주세요."
 };
+
 dps.Ajax = {
-    initGrid : function(url, initparam) {
+    axiosRequest : function(url, method, initParams){
+        const XHR = axios.create({
+            baseURL : url,
+            timeout: 300000,
+            headers: {
+                "Content-Type": "application/json;charset=utf-8 ",
+            }
+        })
+    },
+
+    initGrid : function(url,apiRequest,options) {
         const Grid = tui.Grid;
         Grid.applyTheme('stripe');
         /**
@@ -29,12 +40,35 @@ dps.Ajax = {
                 readData: {
                     url: url,      // 서버 URL
                     method: 'GET',           // HTTP 메서드
-                }
+                },
+                /*
+                createData: {
+                    url: url, // 데이터 추가 요청
+                    method: 'POST',
+                },
+                updateData: {
+                    url: url, // 데이터 수정 요청
+                    method: 'PUT',
+                },
+                deleteData: {
+                    url: url, // 데이터 삭제 요청
+                    method: 'DELETE',
+                },
+                 */
             },
         }
         let grid = new Grid({
             el: document.getElementById('grid'),
             data: dataSource,
+            draggable: false,
+            header: {height : 30},
+            rowHeaders : [
+                {
+                    type:'checkbox',
+                    title:''
+                }
+            ],
+            contextmenu : null,
             scrollX: false,
             scrollY: false,
             columns: [
@@ -62,12 +96,12 @@ dps.Ajax = {
         });
         // 검색 버튼 이벤트 리스너
         document.getElementById('searchButton').addEventListener('click', () => {
-            debugger
             const keyword = document.getElementById('searchInput').value.trim();
             grid.readData(1, {keyword}); // 검색어와 함께 첫 페이지 데이터 요청
         });
 
         grid.on('response',(event)=>{
+
             const data = JSON.parse(event.xhr.responseText);
             console.log(event.xhr.responseText);
         });

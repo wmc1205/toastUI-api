@@ -17,10 +17,10 @@ public class  ToastUIGridResponseDto {
         this.data = GridData.builder()
                 .contents(contents)
                 .pagination(PaginationResponseDto.builder()
-                        .page(pagination.getPage())
-                        .totalCount(pagination.getTotalCount())
-                        .perPage(pagination.getPerPage())
-                        .build()
+                .page(pagination.getPage())
+                .totalCount(pagination.getTotalCount())
+                .perPage(pagination.getPerPage())
+                .build()
                 )
                 .build();
     }
