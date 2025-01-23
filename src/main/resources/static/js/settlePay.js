@@ -12,6 +12,7 @@ let Util = {
 }
 
 let SettlePay = {
+
     getUrl : function(obj){
         let processType;
         let url = "";

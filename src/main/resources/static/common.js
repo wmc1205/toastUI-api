@@ -13,7 +13,7 @@ dps.Ajax = {
         })
     },
 
-    initGrid : function(url,apiRequest,options) {
+    initGrid : function(url,options) {
         const Grid = tui.Grid;
         Grid.applyTheme('stripe');
         /**
@@ -41,37 +41,23 @@ dps.Ajax = {
                     url: url,      // 서버 URL
                     method: 'GET',           // HTTP 메서드
                 },
-                /*
-                createData: {
-                    url: url, // 데이터 추가 요청
-                    method: 'POST',
-                },
-                updateData: {
-                    url: url, // 데이터 수정 요청
-                    method: 'PUT',
-                },
-                deleteData: {
-                    url: url, // 데이터 삭제 요청
-                    method: 'DELETE',
-                },
-                 */
             },
         }
-        let grid = new Grid({
+        const defaultOptions = {
             el: document.getElementById('grid'),
-            data: dataSource,
-            draggable: false,
-            header: {height : 30},
+                data: dataSource,
+                draggable: false,
+                header: {height : 30},
             rowHeaders : [
                 {
                     type:'checkbox',
                     title:''
                 }
             ],
-            contextmenu : null,
-            scrollX: false,
-            scrollY: false,
-            columns: [
+                contextmenu : null,
+                scrollX: false,
+                scrollY: false,
+                columns: [
                 {header: 'ID', name: 'id', sortable: true},
                 {header: 'Name', name: 'name', sortable: true},
                 {header: 'Email', name: 'email', sortable: true},
@@ -79,10 +65,10 @@ dps.Ajax = {
                 {header: 'Age', name: 'age', sortable: true},
                 {header: 'Hobby', name: 'hobby', sortable: true}
             ],
-            summary: {
+                summary: {
                 height: 40,
-                position: 'bottom',
-                columnContent: {
+                    position: 'bottom',
+                    columnContent: {
                     userHobby: {
                         template: (valueMap) => {
                             return `사용자 합계 : ${valueMap.cnt}`
@@ -93,19 +79,24 @@ dps.Ajax = {
             pageOptions: {
                 perPage: 20
             },
-        });
-        // 검색 버튼 이벤트 리스너
-        document.getElementById('searchButton').addEventListener('click', () => {
-            const keyword = document.getElementById('searchInput').value.trim();
-            grid.readData(1, {keyword}); // 검색어와 함께 첫 페이지 데이터 요청
-        });
+        }
+
+        const  mergedOptions = { ...defaultOptions, ...options };
+
+        let grid = new Grid(mergedOptions);
+
+        grid.on('check',(event) => {
+            const checkedRowKey = event.rowKey;
+            const rowData = grid.getRow(checkedRowKey);
+            console.log('Checked Row Data : ' ,rowData );
+        })
 
         grid.on('response',(event)=>{
-
             const data = JSON.parse(event.xhr.responseText);
-            console.log(event.xhr.responseText);
+            console.log(data);
         });
 
+        return grid;
     },
     /**
      * Toast UI Editor 작성

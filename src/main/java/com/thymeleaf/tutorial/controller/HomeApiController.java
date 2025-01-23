@@ -1,9 +1,7 @@
 package com.thymeleaf.tutorial.controller;
 
-import com.thymeleaf.tutorial.dto.PaginationRequestDto;
-import com.thymeleaf.tutorial.dto.PaginationResponseDto;
-import com.thymeleaf.tutorial.dto.ToastUIGridResponseDto;
-import com.thymeleaf.tutorial.dto.UserDto;
+import com.thymeleaf.tutorial.dto.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,7 +80,50 @@ public class HomeApiController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+    @GetMapping("/getUsers")
+    public ResponseEntity<BasicResponseDto> getUsers() {
 
+        BasicResponseDto response = new BasicResponseDto();
+        response.setResponseCd("0000");
+        response.setResponseMsg("Success");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+    @PostMapping("/createUsers")
+    public ResponseEntity<BasicResponseDto> createUsers() {
+
+        BasicResponseDto response = new BasicResponseDto();
+        response.setResponseCd("0000");
+        response.setResponseMsg("Success");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+    @PutMapping("/updateUsers")
+    public ResponseEntity<BasicResponseDto> updateUsers() {
+
+        BasicResponseDto response = new BasicResponseDto();
+        response.setResponseCd("0000");
+        response.setResponseMsg("Success");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+    @DeleteMapping("/deleteUsers")
+    public ResponseEntity<BasicResponseDto> deleteUsers() {
+
+        BasicResponseDto response = new BasicResponseDto();
+        response.setResponseCd("0000");
+        response.setResponseMsg("Success");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
     @PostMapping("/image-upload")
     public String uploadEditorImage(@RequestParam final MultipartFile image){
         if(image.isEmpty()){

@@ -33,6 +33,15 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'com.h2database:h2'
+	/* mybatis */
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
+	implementation 'org.mybatis:mybatis:3.5.13'
+	/* mapstruct */
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+	// Hibernate and JPA
+	implementation 'org.hibernate.orm:hibernate-core:7.0.0.Beta3'
 }
 
 tasks.named('test') {
