@@ -157,6 +157,38 @@ dps.Ajax = {
         const mergedOptions = { ...defaultOptions, ...options };
         // 에디터 생성
         return new toastui.Editor(mergedOptions);
+    },
+    fnIsLoading: function() {
+
+        // 뒷 배경 생성
+        if (!document.getElementById('back')) {
+            const backGroundCover = document.createElement('div');
+            backGroundCover.id = 'back'; // 이미 CSS에 정의된 ID
+            document.body.appendChild(backGroundCover);
+        }
+
+        // 로딩바 생성
+        if (!document.getElementById('loadingBar')) {
+            const loadingBar = document.createElement('div');
+            loadingBar.id = 'loadingBar'; // 이미 CSS에 정의된 ID
+            const loadingImage = document.createElement('img');
+            loadingImage.src = 'img/loading.gif'; // 로딩 이미지 경로
+            loadingBar.appendChild(loadingImage);
+            document.body.appendChild(loadingBar);
+        }
+
+        // 보여주기
+        document.getElementById('back').style.display = 'block';
+        document.getElementById('loadingBar').style.display = 'block';
+
+    },
+    hideLoadingBar :function(){
+        // 숨기기
+        const backElement = document.getElementById('back');
+        const loadingBarElement = document.getElementById('loadingBar');
+
+        if (backElement) backElement.style.display = 'none';
+        if (loadingBarElement) loadingBarElement.style.display = 'none';
     }
 }
 

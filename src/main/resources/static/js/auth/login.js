@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const phoneNumberInput = document.getElementById("phoneNumber");
     const nextButton = document.getElementById("nextButton");
-
+    let timer = null;
+    let isRunning = false;
+    let clearBtn;
     phoneNumberInput.addEventListener("input", (event) => {
 
         // 숫자만 입력되도록 필터링
@@ -24,6 +26,44 @@ document.addEventListener("DOMContentLoaded", () => {
             nextButton.disabled = true;
             nextButton.classList.remove("active");
         }
+    });
+    clearBtn = document.getElementById('clearBtn');
+    const display = document.getElementById('time');
+    let leftSec = 30;
+    //타이머 호출(본인인증)
+    dps.Ajax.fnIsLoading();
+    startTimer(leftSec, display);
+    clearBtn.addEventListener('click', () => {
+        display.innerHTML = "00 : " + leftSec+ "";
 
+        if (isRunning) {
+            clearInterval(timer);
+            startTimer(leftSec, display);
+        } else {
+            startTimer(leftSec, display);
+        }
     });
 });
+
+function startTimer(count, display) {
+    let minutes, seconds;
+    timer = setInterval(function () {
+        minutes = parseInt(count / 60, 10);
+        seconds = parseInt(count % 60, 10);
+        //0~9 앞에 0 붙이기
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.innerHTML = minutes + " : " + seconds;
+
+        //타이머 끝
+        if (--count < 0) {
+            dps.Ajax.hideLoadingBar();
+            clearInterval(timer);
+            display.innerHTML="time out";
+            clearBtn.setAttribute("disabled", true);
+            isRunning = false;
+        }
+    }, 1000);
+    isRunning = true;
+}
