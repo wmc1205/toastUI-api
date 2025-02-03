@@ -1,5 +1,6 @@
 package com.thymeleaf.tutorial.controller;
 
+import com.thymeleaf.tutorial.common.PageUtil;
 import com.thymeleaf.tutorial.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,8 +13,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.Files;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -35,46 +38,24 @@ public class HomeApiController {
             @ModelAttribute PaginationRequestDto params
     ) {
         // 데이터 필터링(검색)
-        Stream<UserDto> filteredStream = users.stream();
-        String keyword = params.getKeyword();
-        String sortColumn = params.getSortColumn();
-        boolean sortAscending = params.isSortAscending();
+        List<UserDto> filteredUsers = new ArrayList<>();
+        List<String> keywordList = params.getKeyword();
         int page =   params.getPage();
         int perPage = params.getPerPage();
 
-        if (keyword != null) {
-            filteredStream = filteredStream.filter(user -> user.toString().contains(keyword));
-        }
-        // 데이터 정렬
-        List<UserDto> sortedUsers = filteredStream.sorted((u1, u2) -> {
-            if (sortColumn != null) {
-                try {
-                    Field field = UserDto.class.getDeclaredField(sortColumn);
-                    field.setAccessible(true);
-                    Comparable value1 = (Comparable) field.get(u1);
-                    Comparable value2 = (Comparable) field.get(u2);
-                    return sortAscending ? value1.compareTo(value2) : value2.compareTo(value1);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    return 0;
+        if (keywordList != null && !keywordList.isEmpty()) {
+            for(UserDto user : users) {
+                for(String keyword : keywordList) {
+                    if(user.toString().contains(keyword)) {
+                        filteredUsers.add(user);
+                    }
                 }
             }
-            return 0;
-        }).collect(Collectors.toList());
+        }else{
+            filteredUsers.addAll(users);
+        }
 
-        // 페이징 처리
-        int startIndex = (page - 1) * perPage;
-        int endIndex = Math.min(startIndex + perPage, sortedUsers.size());
-        List<UserDto> pagedUsers = sortedUsers.subList(startIndex, endIndex);
-
-        // Pagination 객체 생성
-        PaginationResponseDto pagination = PaginationResponseDto.builder()
-                .page(page)
-                .totalCount(sortedUsers.size()) // 전체 데이터 개수
-                .perPage(perPage)
-                .build();
-
-        // 응답 데이터 생성
-        ToastUIGridResponseDto response = new ToastUIGridResponseDto(pagedUsers, pagination);
+        ToastUIGridResponseDto response = PageUtil.paginate(filteredUsers,page,perPage);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)

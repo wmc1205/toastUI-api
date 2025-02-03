@@ -1,9 +1,13 @@
+let timer = null;
+let isRunning = false;
+let clearBtn;
+
 document.addEventListener("DOMContentLoaded", () => {
     const phoneNumberInput = document.getElementById("phoneNumber");
     const nextButton = document.getElementById("nextButton");
-    let timer = null;
-    let isRunning = false;
-    let clearBtn;
+    const display = document.getElementById('time');
+    let leftSec = 30;
+    clearBtn = document.getElementById('clearBtn');
     phoneNumberInput.addEventListener("input", (event) => {
 
         // 숫자만 입력되도록 필터링
@@ -27,22 +31,22 @@ document.addEventListener("DOMContentLoaded", () => {
             nextButton.classList.remove("active");
         }
     });
-    clearBtn = document.getElementById('clearBtn');
-    const display = document.getElementById('time');
-    let leftSec = 30;
+
     //타이머 호출(본인인증)
-    dps.Ajax.fnIsLoading();
-    startTimer(leftSec, display);
+
     clearBtn.addEventListener('click', () => {
-        display.innerHTML = "00 : " + leftSec+ "";
 
         if (isRunning) {
             clearInterval(timer);
-            startTimer(leftSec, display);
-        } else {
-            startTimer(leftSec, display);
+            isRunning = false;
         }
+
+        display.innerHTML = "00 : " + leftSec+ "";
+        startTimer(leftSec, display);
     });
+
+    dps.Ajax.fnIsLoading();
+    startTimer(leftSec, display);
 });
 
 function startTimer(count, display) {

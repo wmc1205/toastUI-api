@@ -172,7 +172,7 @@ dps.Ajax = {
             const loadingBar = document.createElement('div');
             loadingBar.id = 'loadingBar'; // 이미 CSS에 정의된 ID
             const loadingImage = document.createElement('img');
-            loadingImage.src = 'img/loading.gif'; // 로딩 이미지 경로
+            //loadingImage.src = 'img/loading.gif'; // 로딩 이미지 경로
             loadingBar.appendChild(loadingImage);
             document.body.appendChild(loadingBar);
         }
@@ -189,7 +189,26 @@ dps.Ajax = {
 
         if (backElement) backElement.style.display = 'none';
         if (loadingBarElement) loadingBarElement.style.display = 'none';
+    },
+    initTab : function(){
+      const tabItem = document.querySelectorAll(".tab_item");
+      const tabContent = document.querySelectorAll(".tab_content");
+
+      tabItem.forEach((item,index) =>{
+          item.addEventListener("click",(e)=>{
+              e.preventDefault();
+              tabContent.forEach((content)=>{
+                  content.classList.remove("active");
+              });
+              tabItem.forEach((content)=>{
+                  content.classList.remove("active");
+              })
+              tabItem[index].classList.add("active");
+              tabContent[index].classList.add("active");
+          });
+      });
     }
 }
+
 
 

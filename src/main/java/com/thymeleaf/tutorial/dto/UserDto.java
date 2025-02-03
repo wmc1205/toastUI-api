@@ -16,6 +16,7 @@ public class UserDto {
     private int age;
     private String hobby;
 
+
     public UserDto(int id, String name, String email, String gender, int age, String hobby) {
         this.id = id;
         this.name = name;
@@ -23,6 +24,7 @@ public class UserDto {
         this.gender = gender;
         this.age = age;
         this.hobby = hobby;
+
     }
 
 }
